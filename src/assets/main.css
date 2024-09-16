@@ -12,3 +12,25 @@ body {
   max-width: 1050px;
   margin: 0 auto;
 }
+
+h1 {
+  font-size: 24px;
+  font-weight: bold;
+  text-align: center;
+}
+
+h2 {
+  font-size: 20px;
+  font-weight: bold;
+}
+
+button {
+  background-color: #ec5a12;
+  border: none;
+  /* width: 205px; */
+  padding: 10px 15px;
+  border-radius: 10px;
+  color: white;
+  font-size: 16px;
+  font-weight: bold;
+}

@@ -1,4 +1,22 @@
-<script setup></script>
+<script setup>
+import { onMounted, ref } from 'vue'
+import axios from 'axios'
+
+const offersInfo = ref(null)
+
+onMounted(async () => {
+  try {
+    const { data } = await axios.get(
+      'https://site--strapileboncoin--2m8zk47gvydr.code.run/api/offers'
+    )
+
+    offersInfo.value = data
+    console.log(offersInfo.value)
+  } catch (error) {
+    console.log(error)
+  }
+})
+</script>
 
 <template>
   <header>
@@ -61,17 +79,6 @@ header {
   display: flex;
   align-items: center;
   gap: 10px;
-}
-
-button {
-  background-color: #ec5a12;
-  border: none;
-  /* width: 205px; */
-  padding: 10px 15px;
-  border-radius: 10px;
-  color: white;
-  font-size: 16px;
-  font-weight: bold;
 }
 
 button > svg {
