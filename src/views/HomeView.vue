@@ -1,19 +1,99 @@
-<script setup></script>
+<script setup>
+import { computed, onMounted, ref } from 'vue'
+import axios from 'axios'
+
+const offersInfo = ref(null)
+const usersInfo = ref(null)
+let owner = ''
+
+onMounted(async () => {
+  try {
+    const { data } = await axios.get(
+      'https://site--strapileboncoin--2m8zk47gvydr.code.run/api/offers/?populate=*'
+    )
+
+    const response = await axios.get(
+      'https://site--strapileboncoin--2m8zk47gvydr.code.run/api/users?populate=*'
+    )
+
+    offersInfo.value = data
+    // console.log(offersInfo.value)
+
+    usersInfo.value = response.data
+    // console.log(usersInfo.value)
+  } catch (error) {
+    console.log(error)
+  }
+})
+const isAvatar = (userId) => {
+  for (let i = 0; i < usersInfo.value.length; i++) {
+    // console.log(usersInfo.value[i])
+    if (usersInfo.value[i].id === userId) {
+      // console.log(usersInfo.value[i])
+      owner = usersInfo.value[i]
+      if (!owner.avatar) {
+        return false
+      } else if (owner.avatar) {
+        return true
+      }
+    }
+  }
+}
+
+const findOwnerAvatarUrl = (userId) => {}
+
+const changeDate = (rawDate) => {
+  let newDate = rawDate.slice(0, 10)
+  let newDateArray = newDate.split('-')
+  newDate = `${newDateArray[2]}/${newDateArray[1]}/${newDateArray[0]}`
+  // console.log(newDate)
+  return newDate
+}
+</script>
 
 <template>
   <main>
-    <h1 class="container">
-      Des millions de petites annonces et autant d'occasions de se faire plaisir
-    </h1>
+    <section>
+      <h1 class="container">
+        Des millions de petites annonces et autant d'occasions de se faire plaisir
+      </h1>
 
-    <div class="container banniere">
-      <img src="../assets/img/onde-corail.svg" alt="onde-corail-leboncoin" />
-      <div>
-        <p>C'est le moment de vendre</p>
-        <button><font-awesome-icon :icon="['far', 'plus-square']" />Déposer une annonce</button>
+      <div class="container banniere">
+        <img src="../assets/img/onde-corail.svg" alt="onde-corail-leboncoin" />
+        <div>
+          <p>C'est le moment de vendre</p>
+          <button><font-awesome-icon :icon="['far', 'plus-square']" />Déposer une annonce</button>
+        </div>
+        <img src="../assets/img/feuille-bleue.svg" alt="feuille-bleue-leboncoin" />
       </div>
-      <img src="../assets/img/feuille-bleue.svg" alt="feuille-bleue-leboncoin" />
-    </div>
+    </section>
+
+    <section class="container">
+      <div v-if="!offersInfo && !usersInfo">En cours de chargement</div>
+
+      <div v-else class="offer" v-for="offer in offersInfo.data" :key="offer.id">
+        <div class="offer-user">
+          <img
+            :src="owner.avatar.url"
+            alt=""
+            v-if="isAvatar(offer.attributes.owner.data.id) === true"
+          />
+
+          <p>{{ offer.attributes.owner.data.attributes.username }}</p>
+        </div>
+
+        <img class="offer-img" :src="offer.attributes.pictures.data[0].attributes.url" alt="" />
+
+        <p>{{ offer.attributes.title }}</p>
+
+        <p class="offer-price">{{ offer.attributes.price }}</p>
+
+        <div class="offer-date-like">
+          <p class="offer-date">{{ changeDate(offer.attributes.publishedAt) }}</p>
+          <font-awesome-icon :icon="['far', 'heart']" />
+        </div>
+      </div>
+    </section>
   </main>
 </template>
 
@@ -43,5 +123,11 @@ h1 {
   font-size: 20px;
   font-weight: bold;
   margin-right: 20px;
+}
+
+/* OFFERS  --------------*/
+
+.offer-img {
+  width: 100px;
 }
 </style>

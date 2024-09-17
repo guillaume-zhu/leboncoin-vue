@@ -1,22 +1,4 @@
-<script setup>
-import { onMounted, ref } from 'vue'
-import axios from 'axios'
-
-const offersInfo = ref(null)
-
-onMounted(async () => {
-  try {
-    const { data } = await axios.get(
-      'https://site--strapileboncoin--2m8zk47gvydr.code.run/api/offers'
-    )
-
-    offersInfo.value = data
-    console.log(offersInfo.value)
-  } catch (error) {
-    console.log(error)
-  }
-})
-</script>
+<script setup></script>
 
 <template>
   <header>
