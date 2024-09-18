@@ -1,5 +1,6 @@
 <script setup>
 import { computed, onMounted, ref } from 'vue'
+import { RouterLink } from 'vue-router'
 import axios from 'axios'
 
 const offersInfo = ref(null)
@@ -31,6 +32,7 @@ const isAvatar = (userId) => {
     if (usersInfo.value[i].id === userId) {
       // console.log(usersInfo.value[i])
       owner = usersInfo.value[i]
+
       if (!owner.avatar) {
         return false
       } else if (owner.avatar) {
@@ -68,31 +70,42 @@ const changeDate = (rawDate) => {
       </div>
     </section>
 
-    <section class="container">
+    <section class="offer-section container">
       <div v-if="!offersInfo && !usersInfo">En cours de chargement</div>
 
-      <div v-else class="offer" v-for="offer in offersInfo.data" :key="offer.id">
-        <div class="offer-user">
-          <img
-            :src="owner.avatar.url"
-            alt=""
-            v-if="isAvatar(offer.attributes.owner.data.id) === true"
-          />
+      <RouterLink
+        v-else
+        :to="{ name: 'offer', params: { id: offer.id } }"
+        v-for="offer in offersInfo.data"
+        :key="offer.id"
+      >
+        <div class="offer">
+          <div>
+            <div class="offer-user">
+              <img
+                :src="owner.avatar.url"
+                alt=""
+                v-if="isAvatar(offer.attributes.owner.data.id) === true"
+              />
 
-          <p>{{ offer.attributes.owner.data.attributes.username }}</p>
+              <p>{{ offer.attributes.owner.data.attributes.username }}</p>
+            </div>
+
+            <img class="offer-img" :src="offer.attributes.pictures.data[0].attributes.url" alt="" />
+
+            <div>
+              <p class="offer-title">{{ offer.attributes.title }}</p>
+
+              <p class="offer-price">{{ offer.attributes.price }} €</p>
+            </div>
+          </div>
+
+          <div class="offer-date-like-bloc">
+            <p class="offer-date">{{ changeDate(offer.attributes.publishedAt) }}</p>
+            <font-awesome-icon :icon="['far', 'heart']" />
+          </div>
         </div>
-
-        <img class="offer-img" :src="offer.attributes.pictures.data[0].attributes.url" alt="" />
-
-        <p>{{ offer.attributes.title }}</p>
-
-        <p class="offer-price">{{ offer.attributes.price }}</p>
-
-        <div class="offer-date-like">
-          <p class="offer-date">{{ changeDate(offer.attributes.publishedAt) }}</p>
-          <font-awesome-icon :icon="['far', 'heart']" />
-        </div>
-      </div>
+      </RouterLink>
     </section>
   </main>
 </template>
@@ -127,7 +140,74 @@ h1 {
 
 /* OFFERS  --------------*/
 
+.offer-section {
+  margin-top: 50px;
+  /* border: 1px solid purple; */
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.offer {
+  /* border: 1px solid blue; */
+  width: calc((1050px - 40px) / 5);
+  height: 380px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  margin-bottom: 30px;
+}
+
+/* AVATAR + USER */
+
+.offer-user {
+  display: flex;
+  justify-content: flex-start;
+  align-items: flex-end;
+  gap: 5px;
+  margin-bottom: 10px;
+}
+
+.offer-user > img {
+  width: 25px;
+  height: 25px;
+  object-fit: cover;
+  border-radius: 50px;
+}
+
+.offer-user > p {
+  font-size: 14px;
+  font-weight: bold;
+}
+
+/* IMG + CONTENT */
+
 .offer-img {
-  width: 100px;
+  width: 100%;
+  height: 240px;
+  object-fit: cover;
+  border-radius: 10px;
+  margin-bottom: 10px;
+}
+
+.offer-price,
+.offer-title {
+  font-size: 16px;
+  font-weight: bold;
+  margin-bottom: 5px;
+}
+
+.offer-date-like-bloc {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.offer-date-like-bloc svg {
+  font-size: 20px;
+}
+
+.offer-date {
+  font-size: 12px;
 }
 </style>

@@ -6,9 +6,10 @@ import router from './router'
 
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 import { library } from '@fortawesome/fontawesome-svg-core'
-import { faHeart, faPlusSquare, faUser } from '@fortawesome/free-regular-svg-icons'
+import { faClock, faHeart, faPlusSquare, faUser } from '@fortawesome/free-regular-svg-icons'
+import { faCheckDouble, faMapMarkedAlt, faMapMarkerAlt } from '@fortawesome/free-solid-svg-icons'
 
-library.add(faUser, faPlusSquare, faHeart)
+library.add(faUser, faPlusSquare, faHeart, faCheckDouble, faClock, faMapMarkerAlt)
 
 const app = createApp(App)
 
