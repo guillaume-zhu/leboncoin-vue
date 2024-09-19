@@ -42,8 +42,6 @@ const isAvatar = (userId) => {
   }
 }
 
-const findOwnerAvatarUrl = (userId) => {}
-
 const changeDate = (rawDate) => {
   let newDate = rawDate.slice(0, 10)
   let newDateArray = newDate.split('-')
@@ -51,6 +49,37 @@ const changeDate = (rawDate) => {
   // console.log(newDate)
   return newDate
 }
+
+const priceSpace = (price) => {
+  let newString = ''
+  let priceString = price.toString()
+  for (let i = priceString.length - 1; i > -1; i--) {
+    newString = newString + priceString[i]
+    // console.log(newString)
+    if (i === priceString.length - 3 || i === priceString.length - 6) {
+      newString = newString + ' '
+    }
+  }
+  return newString.split('').reverse().join('')
+}
+
+// const priceSpace = (price) => {
+//   let newString = ''
+//   let priceString = price.toString()
+//   let priceArray = priceString.split('')
+
+//   if (priceArray.length > 3) {
+//     priceArray = priceArray.reverse()
+
+//     for (let i = 0; i < priceArray.length; i++) {
+//       newString = newString + priceArray[i]
+//       if (i === 2 || i === 5 || i === 8 || i === 11) {
+//         newString = newString + ' '
+//       }
+//     }
+//     return newString.split('').reverse().join('')
+//   } else return priceArray.join('')
+// }
 </script>
 
 <template>
@@ -71,7 +100,7 @@ const changeDate = (rawDate) => {
     </section>
 
     <section class="offer-section container">
-      <div v-if="!offersInfo || !usersInfo">En cours de chargement</div>
+      <div class="loading" v-if="!offersInfo || !usersInfo">En cours de chargement</div>
 
       <RouterLink
         v-else
@@ -96,7 +125,7 @@ const changeDate = (rawDate) => {
             <div>
               <p class="offer-title">{{ offer.attributes.title }}</p>
 
-              <p class="offer-price">{{ offer.attributes.price }} €</p>
+              <p class="offer-price">{{ priceSpace(offer.attributes.price) }} €</p>
             </div>
           </div>
 
@@ -111,6 +140,14 @@ const changeDate = (rawDate) => {
 </template>
 
 <style scoped>
+main {
+  height: calc(100vh - var(--header-heigt) - var(--footer-height));
+}
+
+.loading {
+  height: 100vh;
+}
+
 h1 {
   margin-top: 30px;
   margin-bottom: 30px;

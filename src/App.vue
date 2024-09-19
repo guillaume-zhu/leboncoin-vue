@@ -7,8 +7,14 @@ import Footer from './components/Footer.vue'
 
 <template>
   <Header />
-  <RouterView />
+  <main>
+    <RouterView />
+  </main>
   <Footer />
 </template>
 
-<style scoped></style>
+<style scoped>
+main {
+  margin-top: calc(var(--header-height) + 30px);
+}
+</style>

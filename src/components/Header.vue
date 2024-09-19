@@ -1,9 +1,13 @@
-<script setup></script>
+<script setup>
+import { RouterLink } from 'vue-router'
+</script>
 
 <template>
   <header>
     <div class="header-top container">
-      <img src="../assets/img/logo.svg" alt="leboncoin-logo" />
+      <RouterLink :to="{ name: 'home' }">
+        <img src="../assets/img/logo.svg" alt="leboncoin-logo" />
+      </RouterLink>
       <div>
         <button><font-awesome-icon :icon="['far', 'plus-square']" />Déposer une annonce</button>
         <div class="research-bar">research bar</div>
@@ -43,6 +47,10 @@ header {
   /* border: 1px solid peru; */
   padding: 10px;
   border-bottom: 1px solid black;
+  position: fixed;
+  top: 0px;
+  background-color: white;
+  width: 100%;
 }
 
 /* HEADER TOP -------------*/
@@ -53,8 +61,8 @@ header {
   /* border: 1px solid red; */
 }
 
-.header-top > img {
-  width: 140px;
+.header-top img {
+  width: 165px;
 }
 
 .header-top > div:nth-child(2) {
@@ -85,7 +93,7 @@ nav {
   justify-content: space-between;
   align-items: center;
   /* border: 1px solid blue; */
-  margin-top: 20px;
+  margin-top: 25px;
 }
 
 nav > a {

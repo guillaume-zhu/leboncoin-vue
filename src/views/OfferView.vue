@@ -58,7 +58,7 @@ const isAvatar = (userId) => {
 <template>
   <main>
     <section class="container">
-      <div v-if="!offerInfo || !usersInfo">
+      <div class="loading" v-if="!offerInfo || !usersInfo">
         <p>En cours de chargement</p>
       </div>
 
@@ -134,6 +134,10 @@ main {
   margin-bottom: 12px;
 }
 
+.loading {
+  height: 100vh;
+}
+
 /* PARTIE HAUTE --------------------------- */
 
 .top-part {
@@ -159,7 +163,8 @@ main {
 
 /* USER BLOC  ---------- */
 .right-bloc {
-  border: 1px solid lightgray;
+  /* border: 1px solid lightgray; */
+  box-shadow: 0px 0px 5px lightgray;
   flex: 1;
   padding: 20px;
   display: flex;
@@ -223,7 +228,7 @@ main {
   /* border: 1px solid purple; */
   display: flex;
   flex-direction: column;
-  padding-top: 10px;
+  padding-top: 15px;
   border-top: 1px solid lightgray;
 }
 
