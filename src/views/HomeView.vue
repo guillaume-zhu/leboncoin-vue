@@ -71,7 +71,7 @@ const changeDate = (rawDate) => {
     </section>
 
     <section class="offer-section container">
-      <div v-if="!offersInfo && !usersInfo">En cours de chargement</div>
+      <div v-if="!offersInfo || !usersInfo">En cours de chargement</div>
 
       <RouterLink
         v-else
@@ -101,7 +101,7 @@ const changeDate = (rawDate) => {
           </div>
 
           <div class="offer-date-like-bloc">
-            <p class="offer-date">{{ changeDate(offer.attributes.publishedAt) }}</p>
+            <p class="p-date">{{ changeDate(offer.attributes.publishedAt) }}</p>
             <font-awesome-icon :icon="['far', 'heart']" />
           </div>
         </div>
@@ -205,9 +205,5 @@ h1 {
 
 .offer-date-like-bloc svg {
   font-size: 20px;
-}
-
-.offer-date {
-  font-size: 12px;
 }
 </style>

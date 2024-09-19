@@ -58,48 +58,48 @@ const isAvatar = (userId) => {
 <template>
   <main>
     <section class="container">
-      <div v-if="!offerInfo">
+      <div v-if="!offerInfo || !usersInfo">
         <p>En cours de chargement</p>
       </div>
 
       <div v-else>
         <!-- PARTIE HAUTE ------------>
 
-        <!-- IMAGE OFFER -->
         <div class="top-part">
+          <!-- IMAGE OFFER -->
           <div class="img-bloc">
             <img :src="offerInfo.data.attributes.pictures.data[0].attributes.url" alt="" />
+          </div>
 
-            <!-- BLOC USER DROITE -->
-            <div class="right-bloc">
-              <div class="user-info-bloc">
-                <div class="avatar-user-bloc">
-                  <img
-                    :src="owner.avatar.url"
-                    alt=""
-                    v-if="isAvatar(offerInfo.data.attributes.owner.data.id)"
-                  />
+          <!-- BLOC USER DROITE -->
+          <div class="right-bloc">
+            <div class="user-info-bloc">
+              <div class="avatar-user-bloc">
+                <img
+                  :src="owner.avatar.url"
+                  alt=""
+                  v-if="isAvatar(offerInfo.data.attributes.owner.data.id)"
+                />
 
-                  <h3>
-                    {{ offerInfo.data.attributes.owner.data.attributes.username.toUpperCase() }}
-                  </h3>
-                </div>
-
-                <div class="identity-check-bloc">
-                  <font-awesome-icon :icon="['fas', 'check-double']" />
-                  <p>Pièce d'identité vérifiée</p>
-                </div>
-
-                <div class="answer-bloc">
-                  <font-awesome-icon :icon="['far', 'clock']" />
-                  <p>Répond généralement en 1 heure</p>
-                </div>
+                <h3>
+                  {{ offerInfo.data.attributes.owner.data.attributes.username.toUpperCase() }}
+                </h3>
               </div>
 
-              <div class="button-block">
-                <button>Acheter</button>
-                <button>Message</button>
+              <div class="identity-check-bloc">
+                <font-awesome-icon :icon="['fas', 'check-double']" />
+                <p>Pièce d'identité vérifiée</p>
               </div>
+
+              <div class="answer-bloc">
+                <font-awesome-icon :icon="['far', 'clock']" />
+                <p>Répond généralement en 1 heure</p>
+              </div>
+            </div>
+
+            <div class="button-bloc">
+              <button>Acheter</button>
+              <button>Message</button>
             </div>
           </div>
         </div>
@@ -107,12 +107,12 @@ const isAvatar = (userId) => {
         <!-- PARTIE BASSE ------------>
         <div class="bottom-part">
           <div>
-            <h2>{{ offerInfo.data.attributes.title }}</h2>
-            <h2>{{ offerInfo.data.attributes.price }}</h2>
-            <p>{{ changeDate(offerInfo.data.attributes.publishedAt) }}</p>
+            <h1>{{ offerInfo.data.attributes.title }}</h1>
+            <h2>{{ offerInfo.data.attributes.price }} €</h2>
+            <p class="p-date">{{ changeDate(offerInfo.data.attributes.publishedAt) }}</p>
           </div>
 
-          <div>
+          <div class="description-bloc">
             <h2>Description</h2>
             <p>{{ offerInfo.data.attributes.description }}</p>
           </div>
@@ -128,7 +128,158 @@ const isAvatar = (userId) => {
 </template>
 
 <style scoped>
-img {
-  width: 300px;
+main {
+  padding: 30px 0px;
+  height: calc(100vh - var(--header-heigt) - var(--footer-height));
+  margin-bottom: 12px;
+}
+
+/* PARTIE HAUTE --------------------------- */
+
+.top-part {
+  /* border: 1px solid red; */
+  display: flex;
+  justify-content: space-between;
+  gap: 30px;
+}
+
+/* IMAGE OFFER --------- */
+.img-bloc {
+  width: 650px;
+  height: 350px;
+  /* border: 1px solid blue; */
+  display: flex;
+  justify-content: center;
+}
+
+.img-bloc > img {
+  height: 350px;
+  object-fit: cover;
+}
+
+/* USER BLOC  ---------- */
+.right-bloc {
+  border: 1px solid lightgray;
+  flex: 1;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 375px;
+}
+
+.user-info-bloc {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+/* AVATAR BLOCK */
+.avatar-user-bloc {
+  display: flex;
+}
+
+.avatar-user-bloc > img {
+  width: 65px;
+  height: 65px;
+  border-radius: 50px;
+  margin-right: 10px;
+}
+
+/* IDENTITY CHECK */
+.identity-check-bloc {
+  display: flex;
+  background-color: #ffe9de;
+  width: fit-content;
+  padding: 5px;
+  border-radius: 50px;
+}
+
+.identity-check-bloc > svg {
+  font-size: 12px;
+  margin-right: 5px;
+}
+
+.identity-check-bloc > p {
+  font-size: 12px;
+}
+
+/* ANSWER TIME */
+.answer-bloc {
+  display: flex;
+}
+
+.answer-bloc > svg {
+  font-size: 14px;
+  margin-right: 5px;
+}
+
+.answer-bloc > p {
+  font-size: 14px;
+}
+
+/* BUTTON BLOC */
+.button-bloc {
+  /* border: 1px solid purple; */
+  display: flex;
+  flex-direction: column;
+  padding-top: 10px;
+  border-top: 1px solid lightgray;
+}
+
+.button-bloc > button {
+  margin: 5px 0px;
+  height: 50px;
+}
+
+.button-bloc > button:nth-child(2) {
+  background-color: #094171;
+}
+
+/* PARTIE BASSE --------------------------- */
+
+.bottom-part > div:first-child {
+  border-bottom: 1px solid lightgray;
+  width: 650px;
+}
+h1 {
+  text-align: start;
+  margin-bottom: 35px;
+}
+
+h2 {
+  margin-bottom: 25px;
+}
+
+.p-date {
+  margin-bottom: 50px;
+}
+
+.description-bloc {
+  border-bottom: 1px solid lightgray;
+}
+
+.description-bloc > h2 {
+  margin-top: 25px;
+  margin-bottom: 30px;
+}
+
+.description-bloc > p {
+  margin-bottom: 55px;
+  font-size: 16px;
+}
+
+.bottom-part > div:last-child {
+  display: flex;
+  margin-top: 25px;
+}
+
+.bottom-part > div:last-child > svg {
+  font-size: 16px;
+  margin-right: 5px;
+}
+
+.bottom-part > div:last-child > p {
+  font-size: 16px;
 }
 </style>

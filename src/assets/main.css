@@ -2,6 +2,7 @@
 
 :root {
   --header-height: 110px;
+  --footer-height: 80px;
 }
 
 body {
@@ -24,12 +25,17 @@ h2 {
   font-weight: bold;
 }
 
+h3 {
+  font-size: 18px;
+  font-weight: bold;
+}
+
 button {
   background-color: #ec5a12;
   border: none;
   /* width: 205px; */
   padding: 10px 15px;
-  border-radius: 10px;
+  border-radius: 15px;
   color: white;
   font-size: 16px;
   font-weight: bold;
@@ -38,4 +44,8 @@ button {
 a {
   text-decoration: none;
   color: black;
+}
+
+.p-date {
+  font-size: 12px;
 }
