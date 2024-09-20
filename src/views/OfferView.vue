@@ -18,17 +18,11 @@ let owner = ''
 onMounted(async () => {
   try {
     const { data } = await axios.get(
-      `https://site--strapileboncoin--2m8zk47gvydr.code.run/api/offers/${props.id}?populate=*`
-    )
-    const response = await axios.get(
-      'https://site--strapileboncoin--2m8zk47gvydr.code.run/api/users/?populate=*'
+      `https://site--strapileboncoin--2m8zk47gvydr.code.run/api/offers/${props.id}?populate[0]=pictures&populate[1]=owner.avatar`
     )
 
-    offerInfo.value = data
+    offerInfo.value = data.data
     // console.log(offerInfo.value)
-
-    usersInfo.value = response.data
-    // console.log(usersInfo.value)
   } catch (error) {
     console.log(error)
   }
@@ -42,23 +36,9 @@ const changeDate = (rawDate) => {
   return newDate
 }
 
-const isAvatar = (userId) => {
-  for (let i = 0; i < usersInfo.value.length; i++) {
-    if (usersInfo.value[i].id === userId) {
-      //   console.log(usersInfo.value[i])
-      owner = usersInfo.value[i]
-      if (!owner.avatar) {
-        return false
-      } else if (owner.avatar) {
-        return true
-      }
-    }
-  }
-}
-
 const cycleList = computed(() => {
-  if (offerInfo.value.data.attributes.pictures.data) {
-    const { state, next, prev } = useCycleList(offerInfo.value.data.attributes.pictures.data)
+  if (offerInfo.value.attributes.pictures.data) {
+    const { state, next, prev } = useCycleList(offerInfo.value.attributes.pictures.data)
     // console.log(state)
 
     return { state, next, prev }
@@ -71,7 +51,7 @@ const cycleList = computed(() => {
 <template>
   <main>
     <section class="container">
-      <div class="loading" v-if="!offerInfo || !usersInfo">
+      <div class="loading" v-if="!offerInfo">
         <h1>En cours de chargement</h1>
       </div>
 
@@ -91,13 +71,13 @@ const cycleList = computed(() => {
             <div class="user-info-bloc">
               <div class="avatar-user-bloc">
                 <img
-                  :src="owner.avatar.url"
+                  :src="offerInfo.attributes.owner.data.attributes.avatar.data.attributes.url"
                   alt=""
-                  v-if="isAvatar(offerInfo.data.attributes.owner.data.id)"
+                  v-if="offerInfo.attributes.owner.data.attributes.avatar.data"
                 />
 
                 <h3>
-                  {{ offerInfo.data.attributes.owner.data.attributes.username.toUpperCase() }}
+                  {{ offerInfo.attributes.owner.data.attributes.username.toUpperCase() }}
                 </h3>
               </div>
 
@@ -122,14 +102,14 @@ const cycleList = computed(() => {
         <!-- PARTIE BASSE ------------>
         <div class="bottom-part">
           <div>
-            <h1>{{ offerInfo.data.attributes.title }}</h1>
-            <h2>{{ offerInfo.data.attributes.price }} €</h2>
-            <p class="p-date">{{ changeDate(offerInfo.data.attributes.publishedAt) }}</p>
+            <h1>{{ offerInfo.attributes.title }}</h1>
+            <h2>{{ offerInfo.attributes.price }} €</h2>
+            <p class="p-date">{{ changeDate(offerInfo.attributes.publishedAt) }}</p>
           </div>
 
           <div class="description-bloc">
             <h2>Description</h2>
-            <p>{{ offerInfo.data.attributes.description }}</p>
+            <p>{{ offerInfo.attributes.description }}</p>
           </div>
 
           <div>
