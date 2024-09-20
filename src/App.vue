@@ -10,11 +10,12 @@ import Footer from './components/Footer.vue'
   <main>
     <RouterView />
   </main>
+
   <Footer />
 </template>
 
 <style scoped>
 main {
-  margin-top: calc(var(--header-height) + 30px);
+  margin-top: calc(var(--header-height));
 }
 </style>

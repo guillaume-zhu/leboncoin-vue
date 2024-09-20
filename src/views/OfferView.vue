@@ -1,6 +1,7 @@
 <script setup>
-import { onMounted, ref } from 'vue'
+import { computed, onMounted, ref } from 'vue'
 import axios from 'axios'
+import { useCycleList } from '@vueuse/core'
 
 const props = defineProps({
   id: {
@@ -11,6 +12,7 @@ const props = defineProps({
 
 const offerInfo = ref(null)
 const usersInfo = ref(null)
+
 let owner = ''
 
 onMounted(async () => {
@@ -53,13 +55,24 @@ const isAvatar = (userId) => {
     }
   }
 }
+
+const cycleList = computed(() => {
+  if (offerInfo.value.data.attributes.pictures.data) {
+    const { state, next, prev } = useCycleList(offerInfo.value.data.attributes.pictures.data)
+    // console.log(state)
+
+    return { state, next, prev }
+  } else {
+    return {}
+  }
+})
 </script>
 
 <template>
   <main>
     <section class="container">
       <div class="loading" v-if="!offerInfo || !usersInfo">
-        <p>En cours de chargement</p>
+        <h1>En cours de chargement</h1>
       </div>
 
       <div v-else>
@@ -68,7 +81,9 @@ const isAvatar = (userId) => {
         <div class="top-part">
           <!-- IMAGE OFFER -->
           <div class="img-bloc">
-            <img :src="offerInfo.data.attributes.pictures.data[0].attributes.url" alt="" />
+            <font-awesome-icon :icon="['fas', 'chevron-left']" @click="cycleList.prev()" />
+            <img :src="cycleList.state.value.attributes.url" alt="" />
+            <font-awesome-icon :icon="['fas', 'chevron-right']" @click="cycleList.next()" />
           </div>
 
           <!-- BLOC USER DROITE -->
@@ -136,6 +151,9 @@ main {
 
 .loading {
   height: 100vh;
+  /* width: 100vw; */
+  display: flex;
+  justify-content: center;
 }
 
 /* PARTIE HAUTE --------------------------- */
@@ -153,12 +171,17 @@ main {
   height: 350px;
   /* border: 1px solid blue; */
   display: flex;
-  justify-content: center;
+  justify-content: space-between;
+  align-items: center;
 }
 
 .img-bloc > img {
   height: 350px;
   object-fit: cover;
+}
+
+.img-bloc > svg {
+  cursor: pointer;
 }
 
 /* USER BLOC  ---------- */

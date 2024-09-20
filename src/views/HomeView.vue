@@ -100,7 +100,9 @@ const priceSpace = (price) => {
     </section>
 
     <section class="offer-section container">
-      <div class="loading" v-if="!offersInfo || !usersInfo">En cours de chargement</div>
+      <div class="loading" v-if="!offersInfo || !usersInfo">
+        <h1>En cours de chargement</h1>
+      </div>
 
       <RouterLink
         v-else
@@ -146,6 +148,17 @@ main {
 
 .loading {
   height: 100vh;
+  width: 100vw;
+  display: flex;
+  justify-content: center;
+}
+
+.loading > h1 {
+  text-align: center;
+}
+
+section > h1:first-child {
+  margin-top: 140px;
 }
 
 h1 {
