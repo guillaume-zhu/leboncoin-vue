@@ -9,6 +9,11 @@ body {
   font-family: 'Nunito Sans', sans-serif;
 }
 
+main {
+  margin-top: calc(var(--header-height));
+  height: calc(100vh - var(--header-height) - var(--footer-height));
+}
+
 .container {
   max-width: 1050px;
   margin: 0 auto;

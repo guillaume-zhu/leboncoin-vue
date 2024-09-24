@@ -1,22 +1,49 @@
 <script setup>
 import { RouterLink } from 'vue-router'
+import { inject } from 'vue'
+
+const GlobalStore = inject('GlobalStore')
+// console.log(GlobalStore)
 </script>
 
 <template>
   <header>
+    <!-- HEADER TOP PART -------------------->
     <div class="header-top container">
+      <!-- LOGO -->
       <RouterLink :to="{ name: 'home' }">
         <img src="../assets/img/logo.svg" alt="leboncoin-logo" />
       </RouterLink>
+
+      <!-- MID BUTTONS -->
       <div>
         <button><font-awesome-icon :icon="['far', 'plus-square']" />Déposer une annonce</button>
         <div class="research-bar">research bar</div>
       </div>
-      <div class="connect">
-        <font-awesome-icon :icon="['far', 'user']" />
-        <p>Se connecter</p>
-      </div>
+
+      <!-- CONNECT BLOC -->
+      <RouterLink
+        :to="{ name: 'login' }"
+        v-if="!GlobalStore.userName.value && !GlobalStore.userToken.value"
+      >
+        <div class="connect">
+          <font-awesome-icon :icon="['far', 'user']" />
+          <p>Se connecter</p>
+        </div>
+      </RouterLink>
+
+      <RouterLink :to="{ name: 'home' }" v-else @click="GlobalStore.logOut()">
+        <div class="disconnect">
+          <div class="connect">
+            <font-awesome-icon :icon="['far', 'user']" />
+            <p>{{ GlobalStore.userName.value }}</p>
+          </div>
+          <font-awesome-icon :icon="['fas', 'sign-out-alt']" />
+        </div>
+      </RouterLink>
     </div>
+
+    <!-- HEADER BOTTOM PART -------------------->
     <nav class="header-bot container">
       <a href="">Immobilier</a>
       <p>⸱</p>
@@ -75,6 +102,7 @@ button > svg {
   margin-right: 10px;
 }
 
+/* CONNECT BLOC ----*/
 .connect {
   display: flex;
   flex-direction: column;
@@ -84,6 +112,12 @@ button > svg {
 
 .connect > p {
   font-size: 12px;
+}
+
+.disconnect {
+  display: flex;
+  align-items: center;
+  gap: 30px;
 }
 
 /* HEADER BOT -------------*/

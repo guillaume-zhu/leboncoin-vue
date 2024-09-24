@@ -60,10 +60,21 @@ const cycleList = computed(() => {
 
         <div class="top-part">
           <!-- IMAGE OFFER -->
-          <div class="img-bloc">
-            <font-awesome-icon :icon="['fas', 'chevron-left']" @click="cycleList.prev()" />
+          <div
+            class="img-bloc"
+            :class="{ noMorePicture: offerInfo.attributes.pictures.data?.length < 2 }"
+          >
+            <font-awesome-icon
+              :icon="['fas', 'chevron-left']"
+              @click="cycleList.prev()"
+              v-if="offerInfo.attributes.pictures.data?.length > 1"
+            />
             <img :src="cycleList.state.value.attributes.url" alt="" />
-            <font-awesome-icon :icon="['fas', 'chevron-right']" @click="cycleList.next()" />
+            <font-awesome-icon
+              :icon="['fas', 'chevron-right']"
+              @click="cycleList.next()"
+              v-if="offerInfo.attributes.pictures.data?.length > 1"
+            />
           </div>
 
           <!-- BLOC USER DROITE -->
@@ -153,6 +164,10 @@ main {
   display: flex;
   justify-content: space-between;
   align-items: center;
+}
+
+.noMorePicture {
+  justify-content: center;
 }
 
 .img-bloc > img {
