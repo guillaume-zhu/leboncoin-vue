@@ -33,17 +33,17 @@ const logIn = async () => {
       }
     )
 
-    // STOCKAGE TOKEN + USERNAME PROVIDE STORE
-    GlobalStore.changeToken(data.jwt)
-    GlobalStore.changeUserName(data.user.username)
+    // STOCKAGE PROVIDE TOKEN +
+    GlobalStore.createUserInfo(data.jwt, data.user.username)
 
     // AFFICHAGE REPONSE CONSOLE
     console.log('response >>>>>>>', data)
+    console.log('response correction >>>>>>>', data.user.username)
 
     // REDIRECTION
     router.push({ name: 'home' })
   } catch (error) {
-    console.log(error.response.data.error)
+    console.log(error)
     errorMessage.value = 'Un problème est survenu, veuillez essayer à nouveau'
   }
   isSubmiting.value = false

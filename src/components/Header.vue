@@ -4,6 +4,7 @@ import { inject } from 'vue'
 
 const GlobalStore = inject('GlobalStore')
 // console.log(GlobalStore)
+// console.log('cookie ---->', $cookies.get('userInfoCookie'))
 </script>
 
 <template>
@@ -22,10 +23,7 @@ const GlobalStore = inject('GlobalStore')
       </div>
 
       <!-- CONNECT BLOC -->
-      <RouterLink
-        :to="{ name: 'login' }"
-        v-if="!GlobalStore.userName.value && !GlobalStore.userToken.value"
-      >
+      <RouterLink :to="{ name: 'login' }" v-if="!GlobalStore.userInfo.value">
         <div class="connect">
           <font-awesome-icon :icon="['far', 'user']" />
           <p>Se connecter</p>
@@ -36,7 +34,7 @@ const GlobalStore = inject('GlobalStore')
         <div class="disconnect">
           <div class="connect">
             <font-awesome-icon :icon="['far', 'user']" />
-            <p>{{ GlobalStore.userName.value }}</p>
+            <p>{{ GlobalStore.userInfo.value.username }}</p>
           </div>
           <font-awesome-icon :icon="['fas', 'sign-out-alt']" />
         </div>

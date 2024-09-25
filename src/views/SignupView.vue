@@ -33,8 +33,8 @@ const signup = async () => {
     )
 
     // STOCKAGE PROVIDE DU JWT + NOM
-    GlobalStore.changeToken(data.jwt)
-    GlobalStore.changeUserName(data.user.username)
+
+    GlobalStore.createUserInfo(data.jwt, data.user.username)
 
     //   AFFICHAGE DE LA RÉPONSE CONSOLE
     console.log('response >>>>', data)

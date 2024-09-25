@@ -3,6 +3,7 @@ import './assets/main.css'
 import { createApp, ref } from 'vue'
 import App from './App.vue'
 import router from './router'
+import VueCookies from 'vue-cookies'
 
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 import { library } from '@fortawesome/fontawesome-svg-core'
@@ -41,29 +42,25 @@ library.add(
 const app = createApp(App)
 
 app.use(router)
+app.use(VueCookies)
 
 // PROVIDER STORE
-const changeToken = (token) => {
-  userToken.value = token
-}
 
-const changeUserName = (name) => {
-  userName.value = name
+const userInfo = ref($cookies.get('userInfoCookie') || '')
+
+const createUserInfo = (token, username) => {
+  userInfo.value = { token: token, username: username }
+  $cookies.set('userInfoCookie', userInfo.value)
 }
 
 const logOut = () => {
-  userToken.value = ''
-  userName.value = ''
+  $cookies.remove('userInfoCookie')
+  userInfo.value = ''
 }
 
-const userToken = ref('')
-const userName = ref('')
-
 app.provide('GlobalStore', {
-  userToken: userToken,
-  userName: userName,
-  changeToken: changeToken,
-  changeUserName: changeUserName,
+  userInfo: userInfo,
+  createUserInfo: createUserInfo,
   logOut: logOut
 })
 

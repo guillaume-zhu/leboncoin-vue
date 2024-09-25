@@ -17,31 +17,13 @@ onMounted(async () => {
     )
 
     offersInfo.value = data.data
-    console.log(offersInfo.value)
+    // console.log(offersInfo.value)
 
     // console.log(usersInfo.value)
   } catch (error) {
     console.log(error)
   }
 })
-
-// const priceSpace = (price) => {
-//   let newString = ''
-//   let priceString = price.toString()
-//   let priceArray = priceString.split('')
-
-//   if (priceArray.length > 3) {
-//     priceArray = priceArray.reverse()
-
-//     for (let i = 0; i < priceArray.length; i++) {
-//       newString = newString + priceArray[i]
-//       if (i === 2 || i === 5 || i === 8 || i === 11) {
-//         newString = newString + ' '
-//       }
-//     }
-//     return newString.split('').reverse().join('')
-//   } else return priceArray.join('')
-// }
 </script>
 
 <template>
