@@ -48,7 +48,14 @@ const priceSpace = (price) => {
           <p>{{ offer.attributes.owner.data.attributes.username }}</p>
         </div>
 
-        <img class="offer-img" :src="offer.attributes.pictures.data[0].attributes.url" alt="" />
+        <img
+          v-if="offer.attributes.pictures.data"
+          class="offer-img"
+          :src="offer.attributes.pictures.data[0].attributes.url"
+          alt=""
+        />
+
+        <div v-else class="no-img-offer"></div>
 
         <div>
           <p class="offer-title">{{ offer.attributes.title }}</p>
@@ -114,6 +121,14 @@ const priceSpace = (price) => {
   width: 100%;
   height: 240px;
   object-fit: cover;
+  border-radius: 10px;
+  margin-bottom: 10px;
+}
+
+.no-img-offer {
+  width: 100%;
+  height: 240px;
+  background-color: grey;
   border-radius: 10px;
   margin-bottom: 10px;
 }

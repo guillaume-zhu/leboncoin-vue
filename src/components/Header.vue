@@ -1,10 +1,31 @@
 <script setup>
-import { RouterLink } from 'vue-router'
-import { inject } from 'vue'
+import { RouterLink, useRoute, useRouter } from 'vue-router'
+import { inject, ref } from 'vue'
 
 const GlobalStore = inject('GlobalStore')
 // console.log(GlobalStore)
 // console.log('cookie ---->', $cookies.get('userInfoCookie'))
+
+const route = useRoute()
+const router = useRouter()
+
+const research = ref('')
+
+const handleSubmit = (event) => {
+  console.log('Input search ------>', event.target[0].value)
+  console.log('Route query ------>', route.query)
+
+  const queries = { ...route.query }
+  if (research.value) {
+    queries.title = research.value
+  } else {
+    delete queries.title
+  }
+
+  queries.page = 1
+
+  router.push({ name: 'home', query: queries })
+}
 </script>
 
 <template>
@@ -19,7 +40,19 @@ const GlobalStore = inject('GlobalStore')
       <!-- MID BUTTONS -->
       <div>
         <button><font-awesome-icon :icon="['far', 'plus-square']" />Déposer une annonce</button>
-        <div class="research-bar">research bar</div>
+
+        <div class="research-bloc">
+          <form @submit.prevent="handleSubmit" class="research-bar">
+            <input
+              type="text"
+              id="research"
+              name="resarch"
+              v-model="research"
+              placeholder="Rechercher sur leboncoin"
+            />
+            <button class="research-button"><font-awesome-icon :icon="['fas', 'search']" /></button>
+          </form>
+        </div>
       </div>
 
       <!-- CONNECT BLOC -->
@@ -98,6 +131,41 @@ header {
 
 button > svg {
   margin-right: 10px;
+}
+
+/* SEARCH -------- */
+.research-bloc {
+  position: relative;
+}
+
+input[id*='research'] {
+  height: 40px;
+  width: 300px;
+  border: none;
+  border-radius: 15px;
+  background-color: #f4f9fe;
+  font-size: 16px;
+  padding: 10px 15px;
+}
+
+.research-button {
+  display: flex;
+  height: 25px;
+  width: 25px;
+  justify-content: center;
+  align-items: center;
+  padding: 10px 10px;
+  border-radius: 5px;
+  position: absolute;
+  top: 7.5px;
+  right: 7.5px;
+  cursor: pointer;
+}
+
+.research-button svg {
+  margin: 0px 0px 0px 0px;
+  color: black;
+  font-size: 12px;
 }
 
 /* CONNECT BLOC ----*/

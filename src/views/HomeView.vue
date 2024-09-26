@@ -1,33 +1,90 @@
 <script setup>
-import { computed, onMounted, ref } from 'vue'
-import { RouterLink } from 'vue-router'
+import { computed, onMounted, ref, watchEffect } from 'vue'
+import { RouterLink, useRouter } from 'vue-router'
 import axios from 'axios'
 import OfferCard from '@/components/OfferCard.vue'
+import Filters from '@/components/Filters.vue'
+
+const router = useRouter()
+const props = defineProps(['pricemin', 'pricemax', 'sort', 'page', 'title'])
+
+// console.log('props ---->', props)
 
 const offersInfo = ref(null)
+const numberOfPages = ref(1)
+const pagination = ref()
 
-onMounted(async () => {
-  try {
-    const { data } = await axios.get(
-      ' https://site--strapileboncoin--2m8zk47gvydr.code.run/api/offers/?populate[0]=pictures&populate[1]=owner.avatar'
-    )
+const handlePreviousPage = () => {
+  const queries = { ...props }
 
-    const response = await axios.get(
-      'https://site--strapileboncoin--2m8zk47gvydr.code.run/api/users?populate=*'
-    )
+  queries.page = queries.page - 1
 
-    offersInfo.value = data.data
-    // console.log(offersInfo.value)
+  router.push({ name: 'home', query: queries })
+}
 
-    // console.log(usersInfo.value)
-  } catch (error) {
-    console.log(error)
-  }
+const handleNextPage = () => {
+  const queries = { ...props }
+
+  queries.page = queries.page + 1
+
+  router.push({ name: 'home', query: queries })
+}
+
+const handleActivePage = (number) => {
+  const queries = { ...props }
+
+  queries.page = number
+
+  router.push({ name: 'home', query: queries })
+}
+
+onMounted(() => {
+  watchEffect(async () => {
+    try {
+      let filtersPriceMax = ''
+      if (!props.pricemax) {
+        filtersPriceMax = ''
+      } else {
+        filtersPriceMax = '&filters[price][$lte]' + '=' + props.pricemax
+        console.log('filtersPriceMax ----->', filtersPriceMax)
+      }
+
+      let filtersPriceMin = ''
+      if (!props.pricemin) {
+        filtersPriceMin = ''
+      } else {
+        filtersPriceMin = '&filters[price][$gte]' + '=' + props.pricemin
+        console.log('filtersPriceMin ----->', filtersPriceMin)
+      }
+      const { data } = await axios.get(
+        `https://site--strapileboncoin--2m8zk47gvydr.code.run/api/offers/?populate[0]=pictures&populate[1]=owner.avatar${filtersPriceMax}${filtersPriceMin}&sort=${props.sort}&filters[title][$containsi]=${props.title}&pagination[pageSize]=10&pagination[page]=${props.page}`
+      )
+
+      offersInfo.value = data.data
+      // console.log(offersInfo.value)
+
+      console.log('data.meta ----->', data.meta)
+
+      numberOfPages.value = data.meta.pagination.pageCount
+      console.log('number of pages ----->', numberOfPages.value)
+
+      pagination.value = data.meta.pagination
+      console.log('pagination ------>', pagination.value)
+    } catch (error) {
+      console.log(error)
+    }
+  })
 })
 </script>
 
 <template>
   <main>
+    <!-- FILTERS  ----------------->
+    <section class="container">
+      <Filters :pricemin="pricemin" :pricemax="pricemax" :sort="sort" />
+    </section>
+
+    <!-- ANNONCES  ----------------->
     <section>
       <h1 class="container">
         Des millions de petites annonces et autant d'occasions de se faire plaisir
@@ -43,6 +100,7 @@ onMounted(async () => {
       </div>
     </section>
 
+    <!-- OFFERS  ----------------->
     <section class="offer-section container">
       <div class="loading" v-if="!offersInfo">
         <h1>En cours de chargement</h1>
@@ -50,6 +108,27 @@ onMounted(async () => {
 
       <OfferCard v-else :offersInfo="offersInfo" />
     </section>
+
+    <!-- PAGINATION  ----------------->
+    <div class="page-bar container">
+      <font-awesome-icon
+        :icon="['fas', 'chevron-left']"
+        @click="handlePreviousPage"
+        v-if="page > 1"
+      />
+
+      <div v-for="number in numberOfPages" :class="{ ifActivePage: number === page }">
+        <p @click="handleActivePage(number)">
+          {{ number }}
+        </p>
+      </div>
+
+      <font-awesome-icon
+        :icon="['fas', 'chevron-right']"
+        @click="handleNextPage"
+        v-if="page < numberOfPages"
+      />
+    </div>
   </main>
 </template>
 
@@ -67,10 +146,6 @@ main {
 
 .loading > h1 {
   text-align: center;
-}
-
-section > h1:first-child {
-  margin-top: 140px;
 }
 
 h1 {
@@ -106,5 +181,44 @@ h1 {
   display: flex;
   flex-wrap: wrap;
   gap: 10px;
+}
+
+/* PAGINATION --------*/
+.page-bar {
+  display: flex;
+  /* border: 1px solid red; */
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 30px;
+}
+
+.page-bar svg {
+  font-size: 12px;
+  cursor: pointer;
+}
+
+.page-bar svg:first-child {
+  margin-right: 20px;
+}
+
+.page-bar svg:last-child {
+  margin-left: 20px;
+}
+
+.page-bar > div {
+  /* border: 1px solid purple; */
+  width: 40px;
+  height: 40px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.ifActivePage {
+  font-weight: bold;
+  background-color: #142333;
+  color: white;
 }
 </style>

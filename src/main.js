@@ -21,6 +21,7 @@ import {
   faChevronLeft,
   faChevronRight,
   faMapMarkerAlt,
+  faSearch,
   faSignOutAlt
 } from '@fortawesome/free-solid-svg-icons'
 
@@ -36,7 +37,8 @@ library.add(
   faArrowRight,
   faSignOutAlt,
   faEye,
-  faEyeSlash
+  faEyeSlash,
+  faSearch
 )
 
 const app = createApp(App)

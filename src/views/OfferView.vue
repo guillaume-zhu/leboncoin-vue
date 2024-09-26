@@ -173,6 +173,7 @@ main {
 .img-bloc > img {
   height: 350px;
   object-fit: cover;
+  max-width: 80%;
 }
 
 .img-bloc > svg {

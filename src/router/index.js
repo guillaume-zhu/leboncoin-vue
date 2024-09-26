@@ -10,7 +10,16 @@ const router = createRouter({
     {
       path: '/',
       name: 'home',
-      component: HomeView
+      component: HomeView,
+      props: (route) => {
+        return {
+          pricemin: Number(route.query.pricemin) || '',
+          pricemax: Number(route.query.pricemax) || '',
+          sort: route.query.sort || '',
+          page: parseInt(route.query.page) || 1,
+          title: route.query.title || ''
+        }
+      }
     },
     {
       path: '/offer/:id',
@@ -28,7 +37,11 @@ const router = createRouter({
       name: 'login',
       component: () => import('../views/LoginView.vue')
     }
-  ]
+  ],
+  // SCROLL BEHAVIOR
+  scrollBehavior() {
+    return { top: 0, left: 0 }
+  }
 })
 
 export default router
