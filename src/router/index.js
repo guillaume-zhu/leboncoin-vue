@@ -1,8 +1,10 @@
 import { createRouter, createWebHistory } from 'vue-router'
+import { inject } from 'vue'
 import HomeView from '../views/HomeView.vue'
 import OfferView from '@/views/OfferView.vue'
 import SignupView from '@/views/SignupView.vue'
 import LoginView from '@/views/LoginView.vue'
+import PublishView from '@/views/PublishView.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -36,6 +38,12 @@ const router = createRouter({
       path: '/login',
       name: 'login',
       component: () => import('../views/LoginView.vue')
+    },
+    {
+      path: '/publish',
+      name: 'publish',
+      component: () => import('../views/PublishView.vue'),
+      meta: { requiredAuth: true }
     }
   ],
   // SCROLL BEHAVIOR
@@ -44,4 +52,12 @@ const router = createRouter({
   }
 })
 
+router.beforeEach((to, from) => {
+  const GlobalStore = inject('GlobalStore')
+  // console.log('GlobalStore ----->', GlobalStore.userInfo.value)
+
+  if (to.meta.requiredAuth === true && !GlobalStore.userInfo.value) {
+    return { name: 'login', query: { redirect: to.name } }
+  }
+})
 export default router

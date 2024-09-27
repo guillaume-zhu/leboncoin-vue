@@ -7,12 +7,10 @@ import Filters from '@/components/Filters.vue'
 
 const router = useRouter()
 const props = defineProps(['pricemin', 'pricemax', 'sort', 'page', 'title'])
-
 // console.log('props ---->', props)
 
 const offersInfo = ref(null)
 const numberOfPages = ref(1)
-const pagination = ref()
 
 const handlePreviousPage = () => {
   const queries = { ...props }
@@ -66,10 +64,7 @@ onMounted(() => {
       console.log('data.meta ----->', data.meta)
 
       numberOfPages.value = data.meta.pagination.pageCount
-      console.log('number of pages ----->', numberOfPages.value)
-
-      pagination.value = data.meta.pagination
-      console.log('pagination ------>', pagination.value)
+      // console.log('number of pages ----->', numberOfPages.value)
     } catch (error) {
       console.log(error)
     }
@@ -81,7 +76,7 @@ onMounted(() => {
   <main>
     <!-- FILTERS  ----------------->
     <section class="container">
-      <Filters :pricemin="pricemin" :pricemax="pricemax" :sort="sort" />
+      <Filters :pricemin="pricemin" :pricemax="pricemax" :sort="sort" :title="title" :page="page" />
     </section>
 
     <!-- ANNONCES  ----------------->
@@ -94,7 +89,9 @@ onMounted(() => {
         <img src="../assets/img/onde-corail.svg" alt="onde-corail-leboncoin" />
         <div>
           <p>C'est le moment de vendre</p>
-          <button><font-awesome-icon :icon="['far', 'plus-square']" />Déposer une annonce</button>
+          <RouterLink :to="{ name: 'publish' }">
+            <button><font-awesome-icon :icon="['far', 'plus-square']" />Déposer une annonce</button>
+          </RouterLink>
         </div>
         <img src="../assets/img/feuille-bleue.svg" alt="feuille-bleue-leboncoin" />
       </div>
@@ -173,6 +170,10 @@ h1 {
   font-size: 20px;
   font-weight: bold;
   margin-right: 20px;
+}
+
+.banniere svg {
+  margin-right: 10px;
 }
 
 .offer-section {

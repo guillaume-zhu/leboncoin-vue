@@ -3,17 +3,13 @@ import { ref } from 'vue'
 import { useRouter } from 'vue-router'
 
 const router = useRouter()
-const props = defineProps(['pricemax', 'pricemin', 'sort', 'page'])
+const props = defineProps(['pricemax', 'pricemin', 'sort', 'page', 'title'])
 
 const priceMin = ref(props.pricemin)
 const priceMax = ref(props.pricemax)
 const sort = ref(props.sort)
 
-const handleInput = (event) => {
-  //   console.log('input pricemin value ------->', event.target[0].value)
-  //   console.log('input pricemax value ------->', event.target[1].value)
-  //
-
+const handleInput = () => {
   const queries = { ...props }
 
   if (!priceMin) {

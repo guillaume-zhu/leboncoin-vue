@@ -17,6 +17,7 @@ import {
 } from '@fortawesome/free-regular-svg-icons'
 import {
   faArrowRight,
+  faCamera,
   faCheckDouble,
   faChevronLeft,
   faChevronRight,
@@ -38,7 +39,8 @@ library.add(
   faSignOutAlt,
   faEye,
   faEyeSlash,
-  faSearch
+  faSearch,
+  faCamera
 )
 
 const app = createApp(App)
@@ -50,8 +52,8 @@ app.use(VueCookies)
 
 const userInfo = ref($cookies.get('userInfoCookie') || '')
 
-const createUserInfo = (token, username) => {
-  userInfo.value = { token: token, username: username }
+const createUserInfo = (token, username, id) => {
+  userInfo.value = { token: token, username: username, id: id }
   $cookies.set('userInfoCookie', userInfo.value)
 }
 

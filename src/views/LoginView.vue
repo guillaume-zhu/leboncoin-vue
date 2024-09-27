@@ -1,10 +1,11 @@
 <script setup>
-import { RouterLink, useRouter } from 'vue-router'
+import { RouterLink, useRouter, useRoute } from 'vue-router'
 import { ref, inject } from 'vue'
 import axios from 'axios'
 
 const GlobalStore = inject('GlobalStore')
 // console.log(GlobalStore)
+const route = useRoute()
 const router = useRouter()
 
 const identifier = ref('')
@@ -34,14 +35,14 @@ const logIn = async () => {
     )
 
     // STOCKAGE PROVIDE TOKEN +
-    GlobalStore.createUserInfo(data.jwt, data.user.username)
+    GlobalStore.createUserInfo(data.jwt, data.user.username, data.user.id)
 
     // AFFICHAGE REPONSE CONSOLE
     console.log('response >>>>>>>', data)
-    console.log('response correction >>>>>>>', data.user.username)
+    // console.log('response correction >>>>>>>', data.user.username)
 
     // REDIRECTION
-    router.push({ name: 'home' })
+    router.push({ name: route.query.redirect || 'home' })
   } catch (error) {
     console.log(error)
     errorMessage.value = 'Un problème est survenu, veuillez essayer à nouveau'

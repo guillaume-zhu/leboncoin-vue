@@ -39,7 +39,9 @@ const handleSubmit = (event) => {
 
       <!-- MID BUTTONS -->
       <div>
-        <button><font-awesome-icon :icon="['far', 'plus-square']" />Déposer une annonce</button>
+        <RouterLink :to="{ name: 'publish' }">
+          <button><font-awesome-icon :icon="['far', 'plus-square']" />Déposer une annonce</button>
+        </RouterLink>
 
         <div class="research-bloc">
           <form @submit.prevent="handleSubmit" class="research-bar">
