@@ -29,29 +29,29 @@ const imagePreview = computed(() => {
 })
 
 const handleSubmit = async () => {
-  if (!title.value || !description.value || !price.value || !pictures.value) {
-    errorMessage.value = 'Veuillez remplir tous les champs'
-    return
-  }
-
-  const formData = new FormData()
-
-  for (const key in pictures.value) {
-    if (Object.hasOwnProperty.call(pictures.value, key)) {
-      formData.append('files.pictures', pictures.value[key])
-    }
-  }
-
-  const stringifiedInfo = JSON.stringify({
-    title: title.value,
-    description: description.value,
-    price: price.value,
-    owner: GlobalStore.userInfo.value.id
-  })
-
-  formData.append('data', stringifiedInfo)
-
   try {
+    if (!title.value || !description.value || !price.value || !pictures.value) {
+      errorMessage.value = 'Veuillez remplir tous les champs'
+      return
+    }
+
+    const formData = new FormData()
+
+    for (const key in pictures.value) {
+      if (Object.hasOwnProperty.call(pictures.value, key)) {
+        formData.append('files.pictures', pictures.value[key])
+      }
+    }
+
+    const stringifiedInfo = JSON.stringify({
+      title: title.value,
+      description: description.value,
+      price: price.value,
+      owner: GlobalStore.userInfo.value.id
+    })
+
+    formData.append('data', stringifiedInfo)
+
     isSubmitting.value = true
 
     const { data } = await axios.post(
@@ -93,11 +93,7 @@ const selectPhoto = (event) => {
 
 <template>
   <main>
-    <section class="container" v-if="isSubmitting">
-      <h1>Envoi en cours ...</h1>
-    </section>
-
-    <section v-else class="container publish-card">
+    <section class="container publish-card">
       <p>Déposer une annonce</p>
 
       <!-- FORM -------------------------->
@@ -147,7 +143,7 @@ const selectPhoto = (event) => {
 
         <!-- PHOTO -------->
         <div>
-          <label
+          <label class="photo-label"
             >Ajoutez des photos
             <div class="photo-bloc">
               <font-awesome-icon :icon="['fas', 'camera']" />
@@ -164,11 +160,16 @@ const selectPhoto = (event) => {
           <img :src="url" alt="" v-for="url in imagePreview" />
         </div>
 
-        <button>Déposer mon annonce</button>
+        <div class="container submitting" v-if="isSubmitting">
+          <p>Création en cours ...</p>
+        </div>
+        <button v-else>Déposer mon annonce</button>
       </form>
 
       <!-- ERROR MESSAGE ------------------------>
-      <p v-if="errorMessage === 'Veuillez remplir tous les champs'">{{ errorMessage }}</p>
+      <p class="error-message" v-if="errorMessage === 'Veuillez remplir tous les champs'">
+        {{ errorMessage }}
+      </p>
     </section>
   </main>
 </template>
@@ -257,6 +258,18 @@ input[id*='price'] {
   border-radius: 0px 10px 10px 0px;
 }
 
+/* ERROR + MESSAGE */
+.error-message {
+  color: red;
+  /* text-align: center; */
+  margin-top: 15px;
+}
+
+.submittin p {
+  font-size: 16px;
+  text-align: left;
+}
+
 /* PHOTO -----*/
 .photo-bloc {
   width: 150px;
@@ -286,6 +299,10 @@ input[id*='pictures'] {
   display: none;
 }
 
+.photo-label {
+  margin-bottom: 0px;
+}
+
 /* IMG PREVIEW */
 .image-preview {
   display: flex;
@@ -305,6 +322,6 @@ img {
 /* BUTTON */
 button {
   width: fit-content;
-  margin-top: 10px;
+  /* margin-top: 10px; */
 }
 </style>

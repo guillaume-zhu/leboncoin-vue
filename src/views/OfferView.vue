@@ -2,6 +2,7 @@
 import { computed, onMounted, ref } from 'vue'
 import axios from 'axios'
 import { useCycleList } from '@vueuse/core'
+import { RouterLink } from 'vue-router'
 
 const props = defineProps({
   id: {
@@ -104,7 +105,9 @@ const cycleList = computed(() => {
             </div>
 
             <div class="button-bloc">
-              <button>Acheter</button>
+              <RouterLink :to="{ name: 'payment', params: { id: id } }">
+                <button class="buy-button">Acheter</button>
+              </RouterLink>
               <button>Message</button>
             </div>
           </div>
@@ -251,13 +254,19 @@ main {
   border-top: 1px solid lightgray;
 }
 
-.button-bloc > button {
+.button-bloc > button,
+.buy-button {
   margin: 5px 0px;
   height: 50px;
+  width: 100%;
 }
 
 .button-bloc > button:nth-child(2) {
   background-color: #094171;
+}
+
+.button-bloc > a {
+  width: 100%;
 }
 
 /* PARTIE BASSE --------------------------- */

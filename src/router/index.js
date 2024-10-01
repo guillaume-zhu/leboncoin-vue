@@ -5,6 +5,7 @@ import OfferView from '@/views/OfferView.vue'
 import SignupView from '@/views/SignupView.vue'
 import LoginView from '@/views/LoginView.vue'
 import PublishView from '@/views/PublishView.vue'
+import PaymentView from '@/views/PaymentView.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -44,6 +45,13 @@ const router = createRouter({
       name: 'publish',
       component: () => import('../views/PublishView.vue'),
       meta: { requiredAuth: true }
+    },
+    {
+      path: '/payment/:id',
+      name: 'payment',
+      component: PaymentView,
+      props: true,
+      meta: { requiredAuth: true }
     }
   ],
   // SCROLL BEHAVIOR
@@ -55,9 +63,11 @@ const router = createRouter({
 router.beforeEach((to, from) => {
   const GlobalStore = inject('GlobalStore')
   // console.log('GlobalStore ----->', GlobalStore.userInfo.value)
+  console.log('to ---->', to)
+  console.log('from ---->', from)
 
-  if (to.meta.requiredAuth === true && !GlobalStore.userInfo.value) {
-    return { name: 'login', query: { redirect: to.name } }
+  if (to.meta.requiredAuth === true && !GlobalStore.userInfo.value?.token) {
+    return { name: 'login', query: { redirect: to.path } }
   }
 })
 export default router

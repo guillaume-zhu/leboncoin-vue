@@ -18,6 +18,7 @@ import {
 import {
   faArrowRight,
   faCamera,
+  faCheck,
   faCheckDouble,
   faChevronLeft,
   faChevronRight,
@@ -40,7 +41,8 @@ library.add(
   faEye,
   faEyeSlash,
   faSearch,
-  faCamera
+  faCamera,
+  faCheck
 )
 
 const app = createApp(App)

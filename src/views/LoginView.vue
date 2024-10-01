@@ -42,7 +42,7 @@ const logIn = async () => {
     // console.log('response correction >>>>>>>', data.user.username)
 
     // REDIRECTION
-    router.push({ name: route.query.redirect || 'home' })
+    router.push({ path: route.query.redirect || '/' })
   } catch (error) {
     console.log(error)
     errorMessage.value = 'Un problème est survenu, veuillez essayer à nouveau'
