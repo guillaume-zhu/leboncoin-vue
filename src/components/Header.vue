@@ -26,6 +26,15 @@ const handleSubmit = (event) => {
 
   router.push({ name: 'home', query: queries })
 }
+
+const changeValue = (event) => {
+  if (event.target.value === '') {
+    const queries = { ...route.query }
+    delete queries.title
+
+    router.push({ name: 'home', query: queries })
+  }
+}
 </script>
 
 <template>
@@ -51,6 +60,7 @@ const handleSubmit = (event) => {
               name="resarch"
               v-model="research"
               placeholder="Rechercher sur leboncoin"
+              @input="changeValue"
             />
             <button class="research-button"><font-awesome-icon :icon="['fas', 'search']" /></button>
           </form>
@@ -65,15 +75,17 @@ const handleSubmit = (event) => {
         </div>
       </RouterLink>
 
-      <RouterLink :to="{ name: 'home' }" v-else @click="GlobalStore.logOut()">
-        <div class="disconnect">
+      <div class="disconnect" v-else>
+        <RouterLink :to="{ name: 'profile' }">
           <div class="connect">
             <font-awesome-icon :icon="['far', 'user']" />
             <p>{{ GlobalStore.userInfo.value.username }}</p>
           </div>
+        </RouterLink>
+        <RouterLink :to="{ name: 'home' }" @click="GlobalStore.logOut()">
           <font-awesome-icon :icon="['fas', 'sign-out-alt']" />
-        </div>
-      </RouterLink>
+        </RouterLink>
+      </div>
     </div>
 
     <!-- HEADER BOTTOM PART -------------------->

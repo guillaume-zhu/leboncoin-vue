@@ -25,6 +25,7 @@ const firstname = ref('')
 const lastname = ref('')
 const phone = ref('')
 const errorMessage = ref('')
+const isProcessing = ref(false)
 
 const cardElement = ref(null)
 const confirmedPayment = ref(false)
@@ -70,11 +71,12 @@ const totalAmount = computed(() => {
 const handlePayment = async () => {
   if (!firstname.value || !lastname.value) {
     errorMessage.value = 'Votre nom et prénom sont obligatoires'
-    return
+    return (errorMessage.value = 'Votre nom et prénom sont obligatoires')
   }
 
   try {
     // ENVOI CARTE À STRIPE
+    isProcessing.value = true
     const stripe = await stripePromise
 
     const { token } = await stripe.createToken(cardElement.value)
@@ -100,12 +102,14 @@ const handlePayment = async () => {
     )
 
     console.log('response back payment---->', data)
+
     if (data.status === 'succeeded') {
       alert(
         `Paiement de ${totalAmount.value} validé pour l'achat du produit ${offerInfo.value.attributes.title} par ${firstname.value} ${lastname.value}`
       )
-      router.push({ name: 'home' })
+      router.replace({ name: 'home' })
     }
+    isProcessing.value = false
   } catch (error) {
     console.log(error)
   }
@@ -124,10 +128,24 @@ const handlePayment = async () => {
 
             <form>
               <label for="firstname">Prénom</label>
-              <input type="text" name="firstname" id="firstname" placeholder="Prénom" />
+              <input
+                type="text"
+                name="firstname"
+                id="firstname"
+                placeholder="Prénom"
+                v-model="firstname"
+                @input="errorMessage = ''"
+              />
 
               <label for="lastname">Nom</label>
-              <input type="text" name="lastname" id="lastname" placeholder="Nom" />
+              <input
+                type="text"
+                name="lastname"
+                id="lastname"
+                placeholder="Nom"
+                v-model="lastname"
+                @input="errorMessage = ''"
+              />
 
               <label for="phone">Téléphone</label
               ><input
@@ -152,7 +170,7 @@ const handlePayment = async () => {
             <div id="card-element"></div>
 
             <div class="pay-error-bloc">
-              <button @click="handlePayment">Payer</button>
+              <button @click="handlePayment" :disable="isProcessing">Payer</button>
               <p v-if="errorMessage">{{ errorMessage }}</p>
             </div>
 
