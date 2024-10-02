@@ -1,7 +1,7 @@
 <script setup>
 import axios from 'axios'
 import { useRouter, RouterLink } from 'vue-router'
-import { onMounted, ref, inject } from 'vue'
+import { onMounted, ref, inject, computed } from 'vue'
 
 const GlobalStore = inject('GlobalStore')
 const router = useRouter()
@@ -37,6 +37,16 @@ const handleDelete = async (offerId) => {
     console.log(error)
   }
 }
+
+const totalOffer = computed(() => {
+  let total = ''
+  if (userInfo.value.offers.length === 1) {
+    total = 'Vous avez 1 annonce'
+  } else {
+    total = `Vous avez ${userInfo.value.offers.length} annonces`
+  }
+  return total
+})
 </script>
 
 <template>
@@ -61,7 +71,8 @@ const handleDelete = async (offerId) => {
       </div>
 
       <!-- NUMBER OF OFFERS ------------->
-      <h3>{{ userInfo.offers.length }} annonces</h3>
+      <h3 v-if="userInfo.offers.length === 0">Vous n'avez aucune annonce en ligne</h3>
+      <h3 v-else>{{ totalOffer }}</h3>
 
       <!-- OFFERS LIST BLOC ------------->
 

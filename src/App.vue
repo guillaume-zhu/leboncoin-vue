@@ -13,9 +13,4 @@ import Footer from './components/Footer.vue'
   <Footer />
 </template>
 
-<style scoped>
-main {
-  margin-top: calc(var(--header-height));
-  height: calc(100vh - var(--header-height) - var(--footer-height));
-}
-</style>
+<style scoped></style>
