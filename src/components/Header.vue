@@ -3,7 +3,7 @@ import { RouterLink, useRoute, useRouter } from 'vue-router'
 import { inject, ref } from 'vue'
 
 const GlobalStore = inject('GlobalStore')
-// console.log(GlobalStore)
+console.log(GlobalStore)
 // console.log('cookie ---->', $cookies.get('userInfoCookie'))
 
 const route = useRoute()
@@ -48,11 +48,11 @@ const changeValue = (event) => {
 
       <!-- MID BUTTONS -->
       <div>
-        <RouterLink :to="{ name: 'publish' }">
+        <RouterLink :to="{ name: 'publish' }" class="publish-button">
           <button><font-awesome-icon :icon="['far', 'plus-square']" />Déposer une annonce</button>
         </RouterLink>
 
-        <div class="research-bloc">
+        <div class="research-bloc" v-if="GlobalStore.width.value >= 680">
           <form @submit.prevent="handleSubmit" class="research-bar">
             <input
               type="text"
@@ -86,6 +86,21 @@ const changeValue = (event) => {
           <font-awesome-icon :icon="['fas', 'sign-out-alt']" />
         </RouterLink>
       </div>
+    </div>
+
+    <!-- RESEARCH BLOC PHONE DISPLAY ONLY -->
+    <div class="research-bloc" v-if="GlobalStore.width.value < 680">
+      <form @submit.prevent="handleSubmit" class="research-bar">
+        <input
+          type="text"
+          id="research"
+          name="resarch"
+          v-model="research"
+          placeholder="Rechercher sur leboncoin"
+          @input="changeValue"
+        />
+        <button class="research-button"><font-awesome-icon :icon="['fas', 'search']" /></button>
+      </form>
     </div>
 
     <!-- HEADER BOTTOM PART -------------------->
@@ -213,5 +228,55 @@ nav {
 nav > a {
   text-decoration: none;
   font-size: 14px;
+}
+
+/* MEDIA QUERIES */
+
+@media (max-width: 970px) {
+  .publish-button {
+    display: none;
+  }
+}
+
+@media (max-width: 880px) {
+  .header-bot {
+    overflow: scroll hidden;
+    justify-content: flex-start;
+    gap: 10px;
+    scrollbar-width: none;
+    flex-shrink: 0;
+  }
+
+  nav > a {
+    white-space: nowrap;
+  }
+}
+
+/* 680 */
+@media (max-width: 680px) {
+  header {
+    padding: 20px;
+    height: fit-content;
+  }
+
+  .research-bloc {
+    margin-top: 20px;
+  }
+
+  .research-bloc input {
+    width: 100%;
+  }
+
+  .header-bot {
+    margin-top: 20px;
+  }
+}
+
+/* 460px */
+@media (max-width: 460px) {
+}
+
+/* 360px */
+@media (max-width: 360px) {
 }
 </style>

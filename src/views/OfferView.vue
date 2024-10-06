@@ -19,7 +19,7 @@ let owner = ''
 onMounted(async () => {
   try {
     const { data } = await axios.get(
-      `https://site--strapileboncoin--2m8zk47gvydr.code.run/api/offers/${props.id}?populate[0]=pictures&populate[1]=owner.avatar`
+      `https://site--strapileboncoin--2m8zk47gvydr.code.run/api/offers/${props.id}?populate[0]=pictures&populate[1]=owner.avatar&populate[2]=owner.offers`
     )
 
     offerInfo.value = data.data
@@ -121,6 +121,57 @@ const cycleList = computed(() => {
             <p class="p-date">{{ changeDate(offerInfo.attributes.publishedAt) }}</p>
           </div>
 
+          <!-- BUTTON BLOC RESPONSIVE DISPLAY ONLY -->
+          <div class="button-responsive-bloc">
+            <RouterLink :to="{ name: 'payment', params: { id: id } }">
+              <button class="buy-button">Acheter</button>
+            </RouterLink>
+          </div>
+
+          <!-- USER BLOC RESPONSIVE DISPLAY ONLY -->
+          <div class="user-responsive-bloc">
+            <img
+              :src="offerInfo.attributes.owner.data.attributes.avatar.data.attributes.url"
+              alt="avatar"
+              v-if="offerInfo.attributes.owner.data.attributes.avatar.data"
+            />
+
+            <div>
+              <h3>{{ offerInfo.attributes.owner.data.attributes.username }}</h3>
+              <p>
+                {{ offerInfo.attributes.owner.data.attributes.offers.data.length }}
+                {{
+                  offerInfo.attributes.owner.data.attributes.offers.data.length > 1
+                    ? 'annonces'
+                    : 'annonce'
+                }}
+              </p>
+            </div>
+          </div>
+
+          <!-- PROTECTION BLOC -->
+          <div class="protection-bloc">
+            <img src="../assets/img/secured-payment.svg" alt="protection" />
+
+            <div>
+              <div class="euro">€</div>
+              <p>Votre argent est sécurisé et versé au bon moment</p>
+            </div>
+
+            <div>
+              <div class="comments">
+                <font-awesome-icon :icon="['far', 'comments']" />
+              </div>
+              <p>Notre service client dédié vous accompagne</p>
+            </div>
+
+            <div>
+              <p>En savoir plus</p>
+              <font-awesome-icon :icon="['fas', 'arrow-right']" />
+            </div>
+          </div>
+
+          <!-- DESCRIPTION BLOC -->
           <div class="description-bloc">
             <h2>Description</h2>
             <p>{{ offerInfo.attributes.description }}</p>
@@ -132,15 +183,26 @@ const cycleList = computed(() => {
           </div>
         </div>
       </div>
+
+      <!-- FOOTER RESPONSIVE DISPLAY ONLY -->
     </section>
   </main>
+  <div class="offer-footer">
+    <button>Contacter</button>
+    <button>Acheter</button>
+  </div>
 </template>
 
 <style scoped>
+template {
+  position: relative;
+}
 main {
-  padding: 30px 0px;
-  height: calc(100vh - var(--header-heigt) - var(--footer-height));
-  margin-bottom: 12px;
+  padding: 30px;
+}
+
+.section {
+  position: relative;
 }
 
 .loading {
@@ -271,6 +333,7 @@ main {
 
 /* PARTIE BASSE --------------------------- */
 
+/* OFFER INFO -------*/
 .bottom-part > div:first-child {
   border-bottom: 1px solid lightgray;
   width: 650px;
@@ -288,6 +351,41 @@ h2 {
   margin-bottom: 50px;
 }
 
+/* PROTECTION BLOC ----- */
+.protection-bloc {
+  padding: 25px 0px;
+  border-bottom: 1px solid lightgray;
+}
+
+.protection-bloc > div {
+  display: flex;
+  margin: 15px 0px;
+  align-items: center;
+  gap: 10px;
+}
+
+.euro,
+.comments {
+  background-color: #e6f2fd;
+  /* border: 1px solid red; */
+  width: 30px;
+  height: 30px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 50px;
+}
+
+.protection-bloc > div:last-child > p {
+  font-weight: bold;
+}
+
+.protection-bloc > div:last-child {
+  margin: 0px;
+  margin-top: 20px;
+}
+
+/* DESCRIPTION --------- */
 .description-bloc {
   border-bottom: 1px solid lightgray;
 }
@@ -314,5 +412,92 @@ h2 {
 
 .bottom-part > div:last-child > p {
   font-size: 16px;
+}
+
+/* MEDIA -------------------------------------- */
+
+.user-responsive-bloc {
+  display: none;
+}
+
+.button-responsive-bloc {
+  display: none;
+}
+
+.offer-footer {
+  display: none;
+}
+
+/* 970px */
+@media (max-width: 970px) {
+  .right-bloc {
+    display: none;
+  }
+
+  .img-bloc {
+    width: 100%;
+  }
+
+  .bottom-part > div:first-child {
+    width: 100%;
+    /* padding-bottom: 20px; */
+    /* background-color: red; */
+  }
+
+  /* BUTTON BLOC RESPONSIVE ----------*/
+  .button-responsive-bloc {
+    padding: 25px 0px;
+    border-bottom: 1px solid lightgray;
+    border-top: none;
+    display: block;
+  }
+
+  /* USER BLOC RESPONSIVE ----------- */
+  .user-responsive-bloc {
+    display: flex;
+    align-items: center;
+    /* border: 1px solid blue; */
+    padding: 25px 0px;
+    border-bottom: 1px solid lightgray;
+  }
+
+  .user-responsive-bloc > img {
+    width: 65px;
+    height: 65px;
+    border-radius: 50px;
+    margin-right: 20px;
+  }
+
+  .user-responsive-bloc > div:nth-child(2) {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+  }
+
+  /* FOOTER RESPONSIVE */
+  .offer-footer {
+    /* border: 1px solid red; */
+    background-color: white;
+    width: 100vw;
+    height: 75px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 15px;
+    padding: 20px;
+    position: fixed;
+    bottom: 0px;
+  }
+
+  .offer-footer > button {
+    flex: 1;
+    height: 45px;
+  }
+
+  .offer-footer > button:first-child {
+    border: 1px solid black;
+    background-color: white;
+    color: black;
+  }
 }
 </style>

@@ -1,8 +1,10 @@
 <script setup>
 import { ref } from 'vue'
 import { useRouter } from 'vue-router'
+import { useWindowSize } from '@vueuse/core'
 
 const router = useRouter()
+const { width, height } = useWindowSize()
 const props = defineProps(['pricemax', 'pricemin', 'sort', 'page', 'title'])
 
 const priceMin = ref(props.pricemin)
@@ -69,11 +71,21 @@ const handleInput = () => {
 
       <div>
         <label
-          >Prix croissants<input type="radio" value="price:asc" id="sort" v-model="sort"
+          >{{ width > 460 ? 'Prix croissants' : ''
+          }}<font-awesome-icon :icon="['fas', 'sort-amount-up']" v-if="width <= 460" /><input
+            type="radio"
+            value="price:asc"
+            id="sort"
+            v-model="sort"
         /></label>
 
         <label
-          >Prix décroissants<input type="radio" value="price:desc" id="sort" v-model="sort"
+          >{{ width > 460 ? 'Prix décroissant' : ''
+          }}<font-awesome-icon :icon="['fas', 'sort-amount-down']" v-if="width <= 460" /><input
+            type="radio"
+            value="price:desc"
+            id="sort"
+            v-model="sort"
         /></label>
 
         <label>Pas de tri<input type="radio" value="" id="sort" v-model="sort" /></label>
@@ -139,5 +151,38 @@ form p {
   display: flex;
   align-items: center;
   gap: 10px;
+}
+
+/* MEDIA  */
+
+/* 1090px */
+@media (max-width: 1090px) {
+  form {
+    display: flex;
+    flex-direction: column;
+    margin-top: 40px;
+    margin-bottom: 20px;
+    gap: 40px;
+  }
+
+  .price-bloc > p,
+  .sort-bloc > p {
+    text-align: center;
+    margin-bottom: 10px;
+  }
+
+  .sort-bloc > div {
+    margin-top: 0px;
+    display: flex;
+    justify-content: center;
+    height: fit-content;
+  }
+}
+
+/* 460px */
+@media (max-width: 460px) {
+  input[type*='number'] {
+    width: 100%;
+  }
 }
 </style>

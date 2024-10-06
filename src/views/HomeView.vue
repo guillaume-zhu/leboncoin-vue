@@ -1,12 +1,15 @@
 <script setup>
-import { computed, onMounted, ref, watchEffect } from 'vue'
+import { computed, onMounted, ref, watchEffect, onUnmounted } from 'vue'
 import { RouterLink, useRouter } from 'vue-router'
+import { useWindowSize } from '@vueuse/core'
 import axios from 'axios'
 import OfferCard from '@/components/OfferCard.vue'
 import Filters from '@/components/Filters.vue'
 
 const router = useRouter()
+const { width, height } = useWindowSize()
 const props = defineProps(['pricemin', 'pricemax', 'sort', 'page', 'title'])
+const pageSize = ref(null)
 // console.log('props ---->', props)
 
 const offersInfo = ref(null)
@@ -54,12 +57,23 @@ onMounted(() => {
         filtersPriceMin = '&filters[price][$gte]' + '=' + props.pricemin
         console.log('filtersPriceMin ----->', filtersPriceMin)
       }
+
+      if (width.value > 1090) {
+        pageSize.value = 10
+      } else if (width.value <= 1090 && width.value > 880) {
+        pageSize.value = 12
+      } else if (width.value <= 880 && width.value > 460) {
+        pageSize.value = 9
+      } else {
+        pageSize.value = 8
+      }
+
       const { data } = await axios.get(
-        `https://site--strapileboncoin--2m8zk47gvydr.code.run/api/offers/?populate[0]=pictures&populate[1]=owner.avatar${filtersPriceMax}${filtersPriceMin}&sort=${props.sort}&filters[title][$containsi]=${props.title}&pagination[pageSize]=10&pagination[page]=${props.page}`
+        `https://site--strapileboncoin--2m8zk47gvydr.code.run/api/offers/?populate[0]=pictures&populate[1]=owner.avatar${filtersPriceMax}${filtersPriceMin}&sort=${props.sort}&filters[title][$containsi]=${props.title}&pagination[pageSize]=${pageSize.value}&pagination[page]=${props.page}`
       )
 
       offersInfo.value = data.data
-      // console.log(offersInfo.value)
+      console.log('data ----->', offersInfo.value)
 
       console.log('data.meta ----->', data.meta)
 
@@ -74,6 +88,7 @@ onMounted(() => {
 
 <template>
   <main>
+    <!-- <h1>{{ width }} x {{ height }}</h1> -->
     <!-- FILTERS  ----------------->
     <section class="container">
       <Filters :pricemin="pricemin" :pricemax="pricemax" :sort="sort" :title="title" :page="page" />
@@ -87,12 +102,14 @@ onMounted(() => {
 
       <div class="container banniere">
         <img src="../assets/img/onde-corail.svg" alt="onde-corail-leboncoin" />
+
         <div>
           <p>C'est le moment de vendre</p>
           <RouterLink :to="{ name: 'publish' }">
             <button><font-awesome-icon :icon="['far', 'plus-square']" />Déposer une annonce</button>
           </RouterLink>
         </div>
+
         <img src="../assets/img/feuille-bleue.svg" alt="feuille-bleue-leboncoin" />
       </div>
     </section>
@@ -154,10 +171,15 @@ h1 {
 .banniere {
   display: flex;
   justify-content: space-between;
-  border-radius: 15px;
+  border-radius: 20px;
   background-color: #ffe9de;
-  height: 80px;
+  min-height: 80px;
   overflow-x: hidden;
+}
+
+.banniere img {
+  height: 100%;
+  object-fit: cover;
 }
 
 .banniere > div {
@@ -191,6 +213,7 @@ h1 {
   justify-content: center;
   align-items: center;
   margin-bottom: 30px;
+  margin-top: 10px;
 }
 
 .page-bar svg {
@@ -221,5 +244,83 @@ h1 {
   font-weight: bold;
   background-color: #142333;
   color: white;
+}
+
+/* MEDIA QUERIES ---------------------------- */
+/* 1090px*/
+@media (max-width: 1090px) {
+  main > section:first-child {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .offer-section {
+    gap: 20px;
+  }
+}
+
+/* 880px */
+@media (max-width: 880px) {
+  .banniere {
+    height: 100px;
+  }
+
+  .banniere > div {
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .banniere > div > p {
+    margin-right: 0px;
+    font-size: 18px;
+  }
+}
+
+/* 680 */
+@media (max-width: 680px) {
+  section > h1:first-child {
+    line-height: 20px;
+  }
+
+  .banniere img:first-child {
+    width: 23%;
+    height: 100%;
+    object-position: right;
+  }
+
+  .banniere img:last-child {
+    width: 23%;
+    height: 100%;
+    object-position: left;
+  }
+}
+
+/* 460px */
+@media (max-width: 460px) {
+  .banniere img:first-child {
+    width: 15%;
+    height: 50%;
+    object-position: right;
+    margin-top: 50px;
+  }
+
+  .banniere img:last-child {
+    width: 15%;
+    height: 50%;
+    /* padding-left: 10px; */
+    object-position: left;
+  }
+}
+
+/* 360px */
+@media (max-width: 360px) {
+  .banniere {
+    justify-content: center;
+  }
+
+  .banniere img {
+    display: none;
+  }
 }
 </style>

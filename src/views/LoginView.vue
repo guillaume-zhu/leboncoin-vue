@@ -237,4 +237,40 @@ button svg {
   font-weight: bold;
   text-decoration: underline;
 }
+
+/* MEDIA -----------------------------*/
+
+/* 680px */
+@media (max-width: 680px) {
+  main {
+    padding-left: 0px;
+    padding-right: 0px;
+  }
+
+  h1 {
+    font-size: 28px;
+  }
+
+  main > div:first-child {
+    align-items: flex-start;
+  }
+
+  .log-bloc {
+    border-radius: 0px;
+    width: 100vw;
+    min-height: calc(100vh - var(--header-height) - var(--footer-height));
+  }
+
+  .log-bloc > p {
+    line-height: 20px;
+  }
+
+  .password-eye-bloc {
+    /* border: 1px solid red; */
+  }
+
+  input[type*='password'] {
+    width: 100%;
+  }
+}
 </style>

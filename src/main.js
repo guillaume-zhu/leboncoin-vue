@@ -4,11 +4,13 @@ import { createApp, ref } from 'vue'
 import App from './App.vue'
 import router from './router'
 import VueCookies from 'vue-cookies'
+import { useWindowSize } from '@vueuse/core'
 
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 import { library } from '@fortawesome/fontawesome-svg-core'
 import {
   faClock,
+  faComments,
   faEye,
   faEyeSlash,
   faHeart,
@@ -23,9 +25,12 @@ import {
   faCheckDouble,
   faChevronLeft,
   faChevronRight,
+  faEuroSign,
   faMapMarkerAlt,
   faSearch,
   faSignOutAlt,
+  faSortAmountDown,
+  faSortAmountUp,
   faTrash
 } from '@fortawesome/free-solid-svg-icons'
 
@@ -46,13 +51,18 @@ library.add(
   faCamera,
   faCheck,
   faArrowLeft,
-  faTrash
+  faTrash,
+  faSortAmountUp,
+  faSortAmountDown,
+  faEuroSign,
+  faComments
 )
 
 const app = createApp(App)
 
 app.use(router)
 app.use(VueCookies)
+const { width } = useWindowSize()
 
 // PROVIDER STORE
 
@@ -71,7 +81,8 @@ const logOut = () => {
 app.provide('GlobalStore', {
   userInfo: userInfo,
   createUserInfo: createUserInfo,
-  logOut: logOut
+  logOut: logOut,
+  width: width
 })
 
 app.component('font-awesome-icon', FontAwesomeIcon).mount('#app')

@@ -7,6 +7,12 @@ const props = defineProps({
   }
 })
 
+if (window.matchMedia('(max-width: 1075px)').matches) {
+  console.log(true)
+} else {
+  console.log(false)
+}
+
 const changeDate = (rawDate) => {
   let newDate = rawDate.slice(0, 10)
   let newDateArray = newDate.split('-')
@@ -42,10 +48,10 @@ const priceSpace = (price) => {
           <img
             :src="offer.attributes.owner.data.attributes.avatar.data.attributes.url"
             alt=""
-            v-if="offer.attributes.owner.data.attributes.avatar.data"
+            v-if="offer.attributes.owner?.data.attributes.avatar.data"
           />
 
-          <p>{{ offer.attributes.owner.data.attributes.username }}</p>
+          <p>{{ offer.attributes.owner?.data.attributes.username }}</p>
         </div>
 
         <img
@@ -148,5 +154,58 @@ const priceSpace = (price) => {
 
 .offer-date-like-bloc svg {
   font-size: 20px;
+}
+
+/* MEDIA */
+
+/* 1090px */
+@media (max-width: 1090px) {
+  .offer {
+    width: 100%;
+    height: 100%;
+    justify-content: flex-start;
+    margin-bottom: 20px;
+  }
+  a {
+    width: calc((100% - 60px) / 4);
+  }
+
+  .offer-img {
+    height: 300px;
+  }
+}
+
+/* 880px */
+@media (max-width: 880px) {
+  a {
+    width: calc((100% - 40px) / 3);
+    /* margin-bottom: 20px; */
+  }
+
+  .offer-img {
+    height: 300px;
+  }
+}
+
+/* 680 */
+@media (max-width: 680px) {
+  a {
+    width: calc((100% - 40px) / 3);
+  }
+
+  .offer-img {
+    height: 200px;
+  }
+}
+
+/* 460px */
+@media (max-width: 460px) {
+  a {
+    width: calc((100% - 20px) / 2);
+  }
+
+  .offer-img {
+    max-height: 180px;
+  }
 }
 </style>

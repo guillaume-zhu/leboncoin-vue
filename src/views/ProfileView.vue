@@ -202,4 +202,41 @@ main > div:first-child {
   font-weight: bold;
   margin-left: 30px;
 }
+
+/* MEDIA ------------------------------ */
+
+/* 680px */
+@media (max-width: 680px) {
+  main > div:first-child {
+    padding: 20px;
+  }
+
+  .offer p {
+    font-size: 18px;
+    margin-left: 20px;
+  }
+
+  .offer svg {
+    margin-left: 8px;
+  }
+
+  .offer > div:nth-child(2) > h3 {
+    display: none;
+  }
+}
+
+/* 460px */
+@media (max-width: 460px) {
+  .offer p {
+    margin-left: 20px;
+    width: 100px;
+    font-size: 16px;
+  }
+
+  .no-avatar,
+  .user-bloc > img {
+    width: 80px;
+    height: 80px;
+  }
+}
 </style>
