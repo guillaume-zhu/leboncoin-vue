@@ -13,7 +13,7 @@ onMounted(async () => {
   isLoading.value = true
   try {
     const { data } = await axios.get(
-      'https://site--strapileboncoin--2m8zk47gvydr.code.run/api/users/me?populate[0]=offers&populate[1]=avatar&populate[2]=offers.pictures',
+      'https://site--backend-leboncoin-exercice--fbdk2fdpdqp5.code.run/api/users/me?populate[0]=offers&populate[1]=avatar&populate[2]=offers.pictures',
       { headers: { Authorization: `Bearer ${GlobalStore.userInfo.value.token}` } }
     )
 
@@ -28,7 +28,7 @@ onMounted(async () => {
 const handleDelete = async (offerId) => {
   try {
     const { data } = await axios.delete(
-      `https://site--strapileboncoin--2m8zk47gvydr.code.run/api/offers/${offerId}`,
+      `https://site--backend-leboncoin-exercice--fbdk2fdpdqp5.code.run/api/offers/${offerId}`,
       { headers: { Authorization: `Bearer ${GlobalStore.userInfo.value.token}` } }
     )
 

@@ -45,15 +45,15 @@ const router = createRouter({
     {
       path: '/publish',
       name: 'publish',
-      component: () => import('../views/PublishView.vue'),
-      meta: { requiredAuth: true }
+      component: () => import('../views/PublishView.vue')
+      // meta: { requiredAuth: true }
     },
     {
       path: '/payment/:id',
       name: 'payment',
       component: PaymentView,
-      props: true,
-      meta: { requiredAuth: true }
+      props: true
+      // meta: { requiredAuth: true }
     },
     {
       path: '/:catchAll(.*)',
@@ -63,7 +63,8 @@ const router = createRouter({
     {
       path: '/profile',
       name: 'profile',
-      component: ProfileView
+      component: ProfileView,
+      meta: { requiredAuth: true }
     }
   ],
   // SCROLL BEHAVIOR

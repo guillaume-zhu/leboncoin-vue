@@ -68,8 +68,12 @@ onMounted(() => {
         pageSize.value = 8
       }
 
+      // const { data } = await axios.get(
+      //   `https://site--strapileboncoin--2m8zk47gvydr.code.run/api/offers/?populate[0]=pictures&populate[1]=owner.avatar${filtersPriceMax}${filtersPriceMin}&sort=${props.sort}&filters[title][$containsi]=${props.title}&pagination[pageSize]=${pageSize.value}&pagination[page]=${props.page}`
+      // )
+
       const { data } = await axios.get(
-        `https://site--strapileboncoin--2m8zk47gvydr.code.run/api/offers/?populate[0]=pictures&populate[1]=owner.avatar${filtersPriceMax}${filtersPriceMin}&sort=${props.sort}&filters[title][$containsi]=${props.title}&pagination[pageSize]=${pageSize.value}&pagination[page]=${props.page}`
+        `https://site--backend-leboncoin-exercice--fbdk2fdpdqp5.code.run/api/offers/?populate[0]=pictures&populate[1]=owner.avatar${filtersPriceMax}${filtersPriceMin}&sort=${props.sort}&filters[title][$containsi]=${props.title}&pagination[pageSize]=${pageSize.value}&pagination[page]=${props.page}`
       )
 
       offersInfo.value = data.data

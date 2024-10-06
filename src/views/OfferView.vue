@@ -19,7 +19,7 @@ let owner = ''
 onMounted(async () => {
   try {
     const { data } = await axios.get(
-      `https://site--strapileboncoin--2m8zk47gvydr.code.run/api/offers/${props.id}?populate[0]=pictures&populate[1]=owner.avatar&populate[2]=owner.offers`
+      `https://site--backend-leboncoin-exercice--fbdk2fdpdqp5.code.run/api/offers/${props.id}?populate[0]=pictures&populate[1]=owner.avatar&populate[2]=owner.offers`
     )
 
     offerInfo.value = data.data
@@ -273,6 +273,7 @@ main {
   height: 65px;
   border-radius: 50px;
   margin-right: 10px;
+  object-fit: cover;
 }
 
 /* IDENTITY CHECK */

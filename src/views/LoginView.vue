@@ -27,7 +27,7 @@ const logIn = async () => {
 
   try {
     const { data } = await axios.post(
-      'https://site--strapileboncoin--2m8zk47gvydr.code.run/api/auth/local',
+      'https://site--backend-leboncoin-exercice--fbdk2fdpdqp5.code.run//api/auth/local',
       {
         identifier: identifier.value,
         password: password.value

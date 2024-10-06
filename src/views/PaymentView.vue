@@ -49,7 +49,7 @@ onMounted(async () => {
     isLoading.value = true
 
     const { data } = await axios.get(
-      `https://site--strapileboncoin--2m8zk47gvydr.code.run/api/offers/${props.id}?populate[0]=pictures`
+      `https://site--backend-leboncoin-exercice--fbdk2fdpdqp5.code.run/api/offers/${props.id}?populate[0]=pictures`
     )
 
     console.log('data axios response ---->', data.data)

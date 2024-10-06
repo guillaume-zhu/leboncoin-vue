@@ -28,7 +28,7 @@ const signup = async () => {
   try {
     // REQUETE AU BACK/API
     const { data } = await axios.post(
-      'https://site--strapileboncoin--2m8zk47gvydr.code.run/api/auth/local/register',
+      'https://site--backend-leboncoin-exercice--fbdk2fdpdqp5.code.run/api/auth/local/register',
       { email: email.value, username: username.value, password: password.value }
     )
 
