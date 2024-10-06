@@ -3,7 +3,7 @@
 <template>
   <footer>
     <p>
-      Made by <a href="https://github.com/guillaume-zhu">Le reacteur</a> with
+      Made by <a href="https://github.com/guillaume-zhu">Guillaume Zhu</a> with
       <a href="https://vuejs.org/">Vue.js</a>
     </p>
   </footer>
